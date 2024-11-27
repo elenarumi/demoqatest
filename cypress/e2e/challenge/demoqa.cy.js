@@ -42,6 +42,28 @@ describe('Automation demo qa tools', () => {
 
   // Subjects
     cy.get('div.subjects-auto-complete__value-container.subjects-auto-complete__value-container--is-multi.css-1hwfws3').type(subjects)
+  //Pruebas de checkboxes de Hobbies
+    cy.get('#hobbies-checkbox-1').check({ force: true }) // Selector del checkbox "Sports"
+      .should('be.checked'); 
+    cy.get('#hobbies-checkbox-2').check({ force: true }) // Selector del checkbox "Reading"
+      .should('be.checked'); // Verificar que está marcado
+    cy.get('#hobbies-checkbox-3').check({ force: true }) // Selector del checkbox "Music"
+      .should('be.checked'); 
+// Desmarcar el checkbox de "Sports"
+cy.get('#hobbies-checkbox-1').uncheck({ force: true }) // Selector del checkbox "Sports"
+.should('not.be.checked'); // Verificar que está desmarcado
+cy.get('#hobbies-checkbox-2').uncheck({ force: true }) // Selector del checkbox "Reading"
+      .should('not.be.checked'); // Verificar que está desmarcad
+
+cy.get('#hobbies-checkbox-3').uncheck({ force: true }) // Selector del checkbox "Music"
+      .should('not.be.checked');
+
+      // Seleccionar múltiples checkboxes
+  cy.get('#hobbies-checkbox-1').check({ force: true }); // "Sports"
+  cy.get('#hobbies-checkbox-2').check({ force: true }); // "Reading"
+
+    // Verificar que ambos están seleccionados
+  cy.get('#hobbies-checkbox-1').should('be.checked');
 
   });
 });
