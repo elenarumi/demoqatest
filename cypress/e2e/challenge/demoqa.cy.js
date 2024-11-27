@@ -15,6 +15,8 @@ describe('Automation demo qa tools', () => {
     const firstName = "Elenia";
     const lastName = "Buss";
     const email = "kakerbet@gmail.com";
+    const mobile = "568778890";
+    const subjects = "Jira, Cypress";
 
     cy.visit('https://demoqa.com/automation-practice-form');
 
@@ -24,6 +26,22 @@ describe('Automation demo qa tools', () => {
     cy.get('#lastName').type(lastName);
     cy.get('#userEmail').type(email);
     cy.get('input[id="gender-radio-2"]').check({ force: true });
+    cy.get('#userNumber').type(mobile);
+    //date of birth picker
+
+    cy.get('#dateOfBirthInput').click(); // Replace with the actual selector if different
+
+    // Navigate to the desired month and year (if necessary)
+    // Example: Navigating to November 2024
+    cy.get('.react-datepicker__month-select').select('November'); // Month dropdown
+    cy.get('.react-datepicker__year-select').select('2024'); // Year dropdown
+
+    // Select the specific day
+    cy.get('div.react-datepicker__day--025').click(); 
+    cy.get('#dateOfBirthInput').should('have.value', '25 Nov 2024'); 
+
+  // Subjects
+    cy.get('div.subjects-auto-complete__value-container.subjects-auto-complete__value-container--is-multi.css-1hwfws3').type(subjects)
 
   });
 });
