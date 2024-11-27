@@ -17,7 +17,7 @@ describe('Automation demo qa tools', () => {
     const email = "kakerbet@gmail.com";
     const mobile = "568778890";
     const subjects = "Jira, Cypress";
-
+    const fileName = 'example.json'; 
     cy.visit('https://demoqa.com/automation-practice-form');
 
     //ACT
@@ -64,6 +64,17 @@ cy.get('#hobbies-checkbox-3').uncheck({ force: true }) // Selector del checkbox 
 
     // Verificar que ambos están seleccionados
   cy.get('#hobbies-checkbox-1').should('be.checked');
+
+
+    // Adjuntar el archivo al input de tipo file
+    cy.get('#uploadPicture').attachFile(fileName); // Adjuntar el archivo
+
+    cy.get('#uploadPicture').then((input) => {
+      // Extraer el valor del campo
+      const filePath = input.val();
+      // Validar que contiene el nombre del archivo
+      expect(filePath).to.include(fileName);
+    });
 
   });
 });
