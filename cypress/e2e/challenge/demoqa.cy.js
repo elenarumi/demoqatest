@@ -7,7 +7,7 @@ describe('Automation demo qa tools', () => {
     });
   });
 
-
+//TCS
   it('TC1 Submit form with credentials', () => {
    
     // Arrange
@@ -90,7 +90,18 @@ cy.get('#hobbies-checkbox-3').uncheck({ force: true }) // Selector del checkbox 
   //Subir el formulario
 
   cy.get('#submit').click();
-
 });
+
+  //TC2
+it.only('TC2 Checkbox: Should check and display the labels', () => {
+  cy.visit("https://demoqa.com/checkbox");
+  cy.get('#tree-node-home').should('have.length', 1);
+  cy.get('.rct-option-expand-all'). click();
+  cy.get('.rct-title').should('have.length', 17);
+
+  
+});
+
+
 });
 
