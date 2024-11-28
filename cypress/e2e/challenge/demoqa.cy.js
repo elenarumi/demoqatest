@@ -18,6 +18,7 @@ describe('Automation demo qa tools', () => {
     const mobile = "568778890";
     const subjects = "Jira, Cypress";
     const fileName = 'example.json'; 
+    const myAddress = "Plaza Ciudad de Viena, 6, 1822, Madrid"
     cy.visit('https://demoqa.com/automation-practice-form');
 
     //ACT
@@ -27,6 +28,7 @@ describe('Automation demo qa tools', () => {
     cy.get('#userEmail').type(email);
     cy.get('input[id="gender-radio-2"]').check({ force: true });
     cy.get('#userNumber').type(mobile);
+
     //date of birth picker
 
     cy.get('#dateOfBirthInput').click(); // Replace with the actual selector if different
@@ -75,7 +77,20 @@ cy.get('#hobbies-checkbox-3').uncheck({ force: true }) // Selector del checkbox 
       // Validar que contiene el nombre del archivo
       expect(filePath).to.include(fileName);
     });
+ cy.get('#currentAddress').type(myAddress);
 
-  });
+  //prueba de la lista desplegable State
+  cy.get('#state').click(); // Abre el menú de estados
+  cy.contains('Uttar Pradesh').click(); // Selecciona "Uttar Pradesh" del menú desplegable
+
+  //prueba de la lista desplegable city
+  cy.get('#city .css-1wa3eu0-placeholder').click(); // Abre el menú desplegable de ciudades
+  cy.contains('Agra').click({ force: true }); // Selecciona la opción "Agra" del menú desplegable
+  
+  //Subir el formulario
+
+  cy.get('#submit').click();
+
+});
 });
 
