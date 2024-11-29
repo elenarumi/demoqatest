@@ -92,16 +92,30 @@ cy.get('#hobbies-checkbox-3').uncheck({ force: true }) // Selector del checkbox 
   cy.get('#submit').click();
 });
 
-  //TC2
+  //TC2 Checkbox
 it.only('TC2 Checkbox: Should check and display the labels', () => {
   cy.visit("https://demoqa.com/checkbox");
   cy.get('#tree-node-home').should('have.length', 1);
   cy.get('.rct-option-expand-all'). click();
   cy.get('.rct-title').should('have.length', 17);
+  cy.get('[type=checkbox]').eq(0).check({ force: true });
+  cy.get('[type=checkbox]').eq(0).should('be.checked');
 
+
+
+  const labels =[];
+
+    // Encuentra los nodos seleccionados
+    cy.get('.rct-checkbox').find('.rct-icon.rct-icon-check').then((elements) => {
+      // Itera sobre los nodos seleccionados
+      elements.each((index, element) => {
+        // Encuentra el texto asociado al checkbox marcado
+        const text = Cypress.$(element).closest('.rct-node').find('.rct-title').text();
+        labels.push(text);
+      });
   
-});
-
-
+    
+    });
+  });
 });
 
