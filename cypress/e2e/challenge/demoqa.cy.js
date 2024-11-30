@@ -100,21 +100,36 @@ it.only('TC2 Checkbox: Should check and display the labels', () => {
   cy.get('.rct-title').should('have.length', 17);
   cy.get('[type=checkbox]').eq(0).check({ force: true });
   cy.get('[type=checkbox]').eq(0).should('be.checked');
+  cy.get('[type=checkbox]').eq(3).uncheck({ force: true });
+  cy.get('[type=checkbox]').eq(3).should('not.be.checked');
 
-
-
-  const labels =[];
-
-    // Encuentra los nodos seleccionados
-    cy.get('.rct-checkbox').find('.rct-icon.rct-icon-check').then((elements) => {
+     const labels = [];
+     cy.get('.rct-checkbox').find('.rct-icon.rct-icon-check').then((elements) => {
       // Itera sobre los nodos seleccionados
       elements.each((index, element) => {
         // Encuentra el texto asociado al checkbox marcado
         const text = Cypress.$(element).closest('.rct-node').find('.rct-title').text();
         labels.push(text);
       });
-  
+
     
+      const successTexts =[];
+      cy.get('#result .text-success').each(element => {
+      
+        successTexts.push(element.text());
+      })
+
+     it('Validates selected and displayed items match', () => {
+    const checkedLabels = labels.map(text => text.toLowerCase().replace(".doc", "").replace(" ", ""));
+    const displayedTexts = successTexts.map(text => text.toLowerCase());
+
+    cy.log('Checked Labels:', checkedLabels);
+    cy.log('Displayed Texts:', displayedTexts);
+
+    // Enhanced assertion to avoid strict order dependency
+    expect(displayedTexts).to.have.members(checkedLabels);
+});
+
     });
   });
 });
