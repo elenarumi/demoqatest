@@ -94,15 +94,30 @@ cy.get('#hobbies-checkbox-3').uncheck({ force: true }) // Selector del checkbox 
 
   //TC2 Checkbox
 it.only('TC2 Checkbox: Should check and display the labels', () => {
+ 
+  let randomNodeIndex;
   cy.visit("https://demoqa.com/checkbox");
-  cy.get('#tree-node-home').should('have.length', 1);
+  cy.get('[for^=tree-node]').should('have.length', 1);
   cy.get('.rct-option-expand-all'). click();
-  cy.get('.rct-title').should('have.length', 17);
-  cy.get('[type=checkbox]').eq(0).check({ force: true });
-  cy.get('[type=checkbox]').eq(0).should('be.checked');
-  cy.get('[type=checkbox]').eq(3).uncheck({ force: true });
-  cy.get('[type=checkbox]').eq(3).should('not.be.checked');
+  cy.get('.rct-checkbox') // Selector para los nodos de interés
+  .then((nodes) => {
+    const count = nodes.length; // Número total de nodos encontrados
+    const randomNodeIndex = Cypress._.random(0, count - 1); // Genera un índice aleatorio entre 0 y count - 1
+    cy.wrap(nodes).eq(randomNodeIndex).click();
+    
+    cy.get('[type=checkbox]').eq(randomNodeIndex).check({ force: true });
+    cy.get('[type=checkbox]').eq(randomNodeIndex).should('be.checked');
 
+    cy.get('[type=checkbox]').eq(0).check({ force: true });
+    cy.get('[type=checkbox]').eq(0).should('be.checked');
+
+
+  cy.get('[type=checkbox]').eq(randomNodeIndex).uncheck({ force: true });
+  cy.get('[type=checkbox]').eq(randomNodeIndex).should('not.be.checked'); // Selecciona y hace clic en el nodo aleatorio
+ 
+});
+
+    
      const labels = [];
      cy.get('.rct-checkbox').find('.rct-icon.rct-icon-check').then((elements) => {
       // Itera sobre los nodos seleccionados
