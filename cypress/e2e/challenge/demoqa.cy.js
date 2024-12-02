@@ -114,7 +114,11 @@ describe('Automation demo qa tools', () => {
 
   // TC3 Radio buttons
   it.only('TC3 Radio buttons', () => {
+    const radioYes = "Yes";
+    const radioImpressive = "Impressive";
+    const radioNo = "No";
     cy.visit('https://demoqa.com/radio-button');
+
 
     function getRadio(radioName) {
       // Encuentra el radio button por su etiqueta
@@ -122,9 +126,19 @@ describe('Automation demo qa tools', () => {
     }
   
     // Selecciona el radio button "Yes"
-    getRadio('Yes').check({ force: true });
+    getRadio(radioYes)
+        .check({ force: true })
+        .then(() => {
+          cy.get('.text-success').should('have.text', radioYes);
+        });
+
+    getRadio(radioImpressive)
+       .check({ force: true })
+       .then(() => {
+           cy.get('.text-success').should('have.text', radioImpressive);
+    });
   
     // Verifica que el radio button "Yes" está seleccionado
-    getRadio('Yes').should('be.checked');
+    getRadio(radioNo).should('be.disabled');
   });
 });
