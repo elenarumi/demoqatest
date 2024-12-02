@@ -7,145 +7,124 @@ describe('Automation demo qa tools', () => {
     });
   });
 
-//TCS
+  // TCS
   it('TC1 Submit form with credentials', () => {
-   
     // Arrange
-    
     const firstName = "Elenia";
     const lastName = "Buss";
     const email = "kakerbet@gmail.com";
     const mobile = "568778890";
     const subjects = "Jira, Cypress";
-    const fileName = 'example.json'; 
-    const myAddress = "Plaza Ciudad de Viena, 6, 1822, Madrid"
+    const fileName = 'example.json';
+    const myAddress = "Plaza Ciudad de Viena, 6, 1822, Madrid";
+
     cy.visit('https://demoqa.com/automation-practice-form');
 
-    //ACT
-    
+    // ACT
     cy.get('#firstName').type(firstName);
     cy.get('#lastName').type(lastName);
     cy.get('#userEmail').type(email);
     cy.get('input[id="gender-radio-2"]').check({ force: true });
     cy.get('#userNumber').type(mobile);
 
-    //date of birth picker
+    // Date of birth picker
+    cy.get('#dateOfBirthInput').click();
+    cy.get('.react-datepicker__month-select').select('November');
+    cy.get('.react-datepicker__year-select').select('2024');
+    cy.get('div.react-datepicker__day--025').click();
+    cy.get('#dateOfBirthInput').should('have.value', '25 Nov 2024');
 
-    cy.get('#dateOfBirthInput').click(); // Replace with the actual selector if different
+    // Subjects
+    cy.get('div.subjects-auto-complete__value-container.subjects-auto-complete__value-container--is-multi.css-1hwfws3').type(subjects);
 
-    // Navigate to the desired month and year (if necessary)
-    // Example: Navigating to November 2024
-    cy.get('.react-datepicker__month-select').select('November'); // Month dropdown
-    cy.get('.react-datepicker__year-select').select('2024'); // Year dropdown
-
-    // Select the specific day
-    cy.get('div.react-datepicker__day--025').click(); 
-    cy.get('#dateOfBirthInput').should('have.value', '25 Nov 2024'); 
-
-  // Subjects
-    cy.get('div.subjects-auto-complete__value-container.subjects-auto-complete__value-container--is-multi.css-1hwfws3').type(subjects)
-  //Pruebas de checkboxes de Hobbies
-    cy.get('#hobbies-checkbox-1').check({ force: true }) // Selector del checkbox "Sports"
-      .should('be.checked'); 
-    cy.get('#hobbies-checkbox-2').check({ force: true }) // Selector del checkbox "Reading"
-      .should('be.checked'); // Verificar que está marcado
-    cy.get('#hobbies-checkbox-3').check({ force: true }) // Selector del checkbox "Music"
-      .should('be.checked'); 
-// Desmarcar el checkbox de "Sports"
-cy.get('#hobbies-checkbox-1').uncheck({ force: true }) // Selector del checkbox "Sports"
-.should('not.be.checked'); // Verificar que está desmarcado
-cy.get('#hobbies-checkbox-2').uncheck({ force: true }) // Selector del checkbox "Reading"
-      .should('not.be.checked'); // Verificar que está desmarcad
-
-cy.get('#hobbies-checkbox-3').uncheck({ force: true }) // Selector del checkbox "Music"
-      .should('not.be.checked');
-
-      // Seleccionar múltiples checkboxes
-  cy.get('#hobbies-checkbox-1').check({ force: true }); // "Sports"
-  cy.get('#hobbies-checkbox-2').check({ force: true }); // "Reading"
-
-    // Verificar que ambos están seleccionados
-  cy.get('#hobbies-checkbox-1').should('be.checked');
-
+    // Pruebas de checkboxes de Hobbies
+    cy.get('#hobbies-checkbox-1').check({ force: true }).should('be.checked');
+    cy.get('#hobbies-checkbox-2').check({ force: true }).should('be.checked');
+    cy.get('#hobbies-checkbox-3').check({ force: true }).should('be.checked');
+    cy.get('#hobbies-checkbox-1').uncheck({ force: true }).should('not.be.checked');
+    cy.get('#hobbies-checkbox-2').uncheck({ force: true }).should('not.be.checked');
+    cy.get('#hobbies-checkbox-3').uncheck({ force: true }).should('not.be.checked');
+    cy.get('#hobbies-checkbox-1').check({ force: true });
+    cy.get('#hobbies-checkbox-2').check({ force: true });
+    cy.get('#hobbies-checkbox-1').should('be.checked');
 
     // Adjuntar el archivo al input de tipo file
-    cy.get('#uploadPicture').attachFile(fileName); // Adjuntar el archivo
-
+    cy.get('#uploadPicture').attachFile(fileName);
     cy.get('#uploadPicture').then((input) => {
-      // Extraer el valor del campo
       const filePath = input.val();
-      // Validar que contiene el nombre del archivo
       expect(filePath).to.include(fileName);
     });
- cy.get('#currentAddress').type(myAddress);
 
-  //prueba de la lista desplegable State
-  cy.get('#state').click(); // Abre el menú de estados
-  cy.contains('Uttar Pradesh').click(); // Selecciona "Uttar Pradesh" del menú desplegable
+    cy.get('#currentAddress').type(myAddress);
 
-  //prueba de la lista desplegable city
-  cy.get('#city .css-1wa3eu0-placeholder').click(); // Abre el menú desplegable de ciudades
-  cy.contains('Agra').click({ force: true }); // Selecciona la opción "Agra" del menú desplegable
-  
-  //Subir el formulario
+    // Prueba de la lista desplegable State
+    cy.get('#state').click();
+    cy.contains('Uttar Pradesh').click();
 
-  cy.get('#submit').click();
-});
+    // Prueba de la lista desplegable City
+    cy.get('#city .css-1wa3eu0-placeholder').click();
+    cy.contains('Agra').click({ force: true });
 
-  //TC2 Checkbox
-it.only('TC2 Checkbox: Should check and display the labels', () => {
- 
-  let randomNodeIndex;
-  cy.visit("https://demoqa.com/checkbox");
-  cy.get('[for^=tree-node]').should('have.length', 1);
-  cy.get('.rct-option-expand-all'). click();
-  cy.get('.rct-checkbox') // Selector para los nodos de interés
-  .then((nodes) => {
-    const count = nodes.length; // Número total de nodos encontrados
-    const randomNodeIndex = Cypress._.random(0, count - 1); // Genera un índice aleatorio entre 0 y count - 1
-    cy.wrap(nodes).eq(randomNodeIndex).click();
-    
-    cy.get('[type=checkbox]').eq(randomNodeIndex).check({ force: true });
-    cy.get('[type=checkbox]').eq(randomNodeIndex).should('be.checked');
+    // Subir el formulario
+    cy.get('#submit').click();
+  });
 
-    cy.get('[type=checkbox]').eq(0).check({ force: true });
-    cy.get('[type=checkbox]').eq(0).should('be.checked');
+  // TC2 Checkbox
+  it('TC2 Checkbox: Should check and display the labels', () => {
+    cy.visit("https://demoqa.com/checkbox");
+    cy.get('[for^=tree-node]').should('have.length', 1);
+    cy.get('.rct-option-expand-all').click();
 
+    cy.get('.rct-checkbox').then((nodes) => {
+      const count = nodes.length;
+      const randomNodeIndex = Cypress._.random(0, count - 1);
+      cy.wrap(nodes).eq(randomNodeIndex).click();
 
-  cy.get('[type=checkbox]').eq(randomNodeIndex).uncheck({ force: true });
-  cy.get('[type=checkbox]').eq(randomNodeIndex).should('not.be.checked'); // Selecciona y hace clic en el nodo aleatorio
- 
-});
+      cy.get('[type=checkbox]').eq(randomNodeIndex).check({ force: true });
+      cy.get('[type=checkbox]').eq(randomNodeIndex).should('be.checked');
 
-    
-     const labels = [];
-     cy.get('.rct-checkbox').find('.rct-icon.rct-icon-check').then((elements) => {
-      // Itera sobre los nodos seleccionados
+      cy.get('[type=checkbox]').eq(0).check({ force: true });
+      cy.get('[type=checkbox]').eq(0).should('be.checked');
+
+      cy.get('[type=checkbox]').eq(randomNodeIndex).uncheck({ force: true });
+      cy.get('[type=checkbox]').eq(randomNodeIndex).should('not.be.checked');
+    });
+
+    const labels = [];
+    cy.get('.rct-checkbox').find('.rct-icon.rct-icon-check').then((elements) => {
       elements.each((index, element) => {
-        // Encuentra el texto asociado al checkbox marcado
         const text = Cypress.$(element).closest('.rct-node').find('.rct-title').text();
         labels.push(text);
       });
 
-    
-      const successTexts =[];
-      cy.get('#result .text-success').each(element => {
-      
-        successTexts.push(element.text());
-      })
+      const successTexts = [];
+      cy.get('#result .text-success').each((index, element) => {
+        successTexts.push(Cypress.$(element).text());
+      });
 
-     it('Validates selected and displayed items match', () => {
-    const checkedLabels = labels.map(text => text.toLowerCase().replace(".doc", "").replace(" ", ""));
-    const displayedTexts = successTexts.map(text => text.toLowerCase());
+      const checkedLabels = labels.map(text => text.toLowerCase().replace(".doc", "").replace(" ", ""));
+      const displayedTexts = successTexts.map(text => text.toLowerCase());
 
-    cy.log('Checked Labels:', checkedLabels);
-    cy.log('Displayed Texts:', displayedTexts);
+      cy.log('Checked Labels:', checkedLabels);
+      cy.log('Displayed Texts:', displayedTexts);
 
-    // Enhanced assertion to avoid strict order dependency
-    expect(displayedTexts).to.have.members(checkedLabels);
-});
-
+      expect(displayedTexts).to.have.members(checkedLabels);
     });
   });
-});
 
+  // TC3 Radio buttons
+  it.only('TC3 Radio buttons', () => {
+    cy.visit('https://demoqa.com/radio-button');
+
+    function getRadio(radioName) {
+      // Encuentra el radio button por su etiqueta
+      return cy.contains('.custom-control-label', radioName).siblings('input');
+    }
+  
+    // Selecciona el radio button "Yes"
+    getRadio('Yes').check({ force: true });
+  
+    // Verifica que el radio button "Yes" está seleccionado
+    getRadio('Yes').should('be.checked');
+  });
+});
