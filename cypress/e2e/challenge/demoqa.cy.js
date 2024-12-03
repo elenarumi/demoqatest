@@ -1,3 +1,5 @@
+const { it } = require("@faker-js/faker");
+
 describe('Automation demo qa tools', () => {
   beforeEach(() => {
     // Prevent Cypress from failing on uncaught exceptions (e.g., from ads, analytics)
@@ -113,7 +115,7 @@ describe('Automation demo qa tools', () => {
   });
 
   // TC3 Radio buttons
-  it.only('TC3 Radio buttons', () => {
+  it('TC3 Radio buttons', () => {
     const radioYes = "Yes";
     const radioImpressive = "Impressive";
     const radioNo = "No";
@@ -141,4 +143,16 @@ describe('Automation demo qa tools', () => {
     // Verifica que el radio button "Yes" está seleccionado
     getRadio(radioNo).should('be.disabled');
   });
+
+  it('TC4 Buttons', () => {
+
+    cy.visit('https://demoqa.com/buttons');
+    cy.contains ('Double Click Me').dblclick();
+    cy.contains ('Right Click Me').rightclick();
+    cy.get('button.btn:not([id$=Btn])').click();
+
+
+});
+
+it.only()
 });
