@@ -1,4 +1,4 @@
-const { it } = require("@faker-js/faker");
+
 
 describe('Automation demo qa tools', () => {
   beforeEach(() => {
@@ -154,5 +154,15 @@ describe('Automation demo qa tools', () => {
 
 });
 
-it.only()
+it.only('TC5 Dynamic buttons', () => {
+  cy.visit('https://demoqa.com/dynamic-properties');
+  cy.get("#enableAfter").should('not.be.enabled');
+  cy.get("#visibleAfter").should('not.exist');
+  cy.wait(5000);
+  cy.get("#enableAfter").should('be.enabled');
+  cy.get("#visibleAfter").should('be.visible');
+  //traducir dc3545 en rgb
+  cy.get("#colorChange").should('have.css', 'color', 'rgb(220, 53, 69)');
+});
+
 });
