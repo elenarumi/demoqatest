@@ -8,5 +8,12 @@
     "mochawesome": "^7.1.3",
     "mochawesome-merge": "^4.3.0",
     "mochawesome-report-generator": "^6.2.0"
-  }
+  },
+
+  "scripts": {
+  "upload-reports": "gh release create reports-$(date +%s) cypress/reports --notes 'Cypress test reports'"
 }
+
+
+}
+

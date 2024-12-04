@@ -39,3 +39,10 @@ jobs:
       # Run Cypress tests
       - name: Run Cypress tests
         run: npx cypress run
+
+
+      - name: Upload Reports
+        if: success()
+        run: |
+          zip -r cypress-reports.zip cypress/reports
+          gh release create reports-${{ github.run_number }} cypress-reports.zip --notes "Cypress test reports"
