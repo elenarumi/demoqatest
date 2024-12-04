@@ -154,7 +154,7 @@ describe('Automation demo qa tools', () => {
 
 });
 
-it.only('TC5 Dynamic buttons', () => {
+it('TC5 Dynamic buttons', () => {
   cy.visit('https://demoqa.com/dynamic-properties');
   cy.get("#enableAfter").should('not.be.enabled');
   cy.get("#visibleAfter").should('not.exist');
@@ -165,4 +165,28 @@ it.only('TC5 Dynamic buttons', () => {
   cy.get("#colorChange").should('have.css', 'color', 'rgb(220, 53, 69)');
 });
 
+it.only('TC6 Upload and download a file', () => {
+  cy.visit('https://demoqa.com/upload-download');
+
+  // Verify and log the download file name
+  cy.get('#downloadButton')
+    .invoke('attr', 'download')
+    .should('eq', 'sampleFile.jpeg')
+    .then((fileName) => {
+      cy.log(`File to download: ${fileName}`);
+
+      // Click the download button
+      cy.get('#downloadButton').click();
+
+      // Verify the file exists in the downloads folder
+      const downloadPath = `/Users/elenarumiantseva/Desktop/demoqa/cypress/downloads/${fileName}`;
+      cy.readFile(downloadPath).should('exist');
+
+      // Upload the file
+      cy.get('#uploadFile').selectFile(downloadPath);
+
+      // Verify the uploaded file path
+      cy.get('#uploadedFilePath').should('contain.text', fileName);
+    });
+});
 });
