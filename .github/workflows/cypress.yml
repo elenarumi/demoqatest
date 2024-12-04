@@ -8,7 +8,7 @@ on:
 
 jobs:
   cypress-run:
-    runs-on: macOS Monterey 12.7.6
+    runs-on: macos-latest
   
     steps:
       # Checkout el código fuente
@@ -32,9 +32,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/Cypress
-          key: cypress-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-Cypress-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            cypress-cache-${{ runner.os }}-
+            ${{ runner.os }}-Cypress-
 
       # Ejecutar las pruebas de Cypress
       - name: Run Cypress tests
