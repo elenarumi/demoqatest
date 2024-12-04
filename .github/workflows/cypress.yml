@@ -3,37 +3,39 @@ name: Cypress Tests
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   cypress-run:
     runs-on: macos-latest
     steps:
+      # Check out the code
       - name: Check out code
         uses: actions/checkout@v3
 
+      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
+      # Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # Explicitly install Cypress binary (forces Cypress to download and install the binary)
       - name: Install Cypress binary
-        run: npx cypress install # Explicitly installs the Cypress binary
+        run: npx cypress install
 
+      # Cache Cypress binary (cache the path where Cypress is installed)
       - name: Cache Cypress binary
         uses: actions/cache@v3
         with:
           path: ~/.cache/Cypress
-          key: ${{ runner.os }}-Cypress-${{ github.sha }}
+          key: ${{ runner.os }}-Cypress-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-Cypress-
 
-      - name: List installed files
-        run: ls -R ~/.cache/Cypress # Debugging step
-
+      # Run Cypress tests
       - name: Run Cypress tests
         run: npx cypress run
-
