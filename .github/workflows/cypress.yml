@@ -3,47 +3,37 @@ name: Cypress Tests
 on:
   push:
     branches:
-      - master  # Ejecutar pruebas cuando se hagan cambios en la rama "main"
-  pull_request:
+      - main
 
 jobs:
   cypress-run:
     runs-on: macos-latest
-  
     steps:
-      # Checkout el código fuente
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v3
 
-      # Configurar Node.js
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20.14.0  # Usa la versión de Node.js que necesites
+          node-version: '20'
 
-      # Instalar dependencias
       - name: Install dependencies
         run: npm install
 
       - name: Install Cypress binary
-        run: npx cypress install
+        run: npx cypress install # Explicitly installs the Cypress binary
 
       - name: Cache Cypress binary
         uses: actions/cache@v3
         with:
           path: ~/.cache/Cypress
-          key: ${{ runner.os }}-Cypress-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-Cypress-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-Cypress-
 
-      # Ejecutar las pruebas de Cypress
+      - name: List installed files
+        run: ls -R ~/.cache/Cypress # Debugging step
+
       - name: Run Cypress tests
         run: npx cypress run
 
-      # Subir informes de Cypress como artefactos (opcional)
-      - name: Upload Test Reports
-        if: always()  # Ejecutar incluso si las pruebas fallan
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-reports
-          path: cypress/reports
