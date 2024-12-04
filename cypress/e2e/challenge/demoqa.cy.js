@@ -165,7 +165,7 @@ it('TC5 Dynamic buttons', () => {
   cy.get("#colorChange").should('have.css', 'color', 'rgb(220, 53, 69)');
 });
 
-it('TC6 Upload and download a file', () => {
+it.only('TC6 Upload and download a file', () => {
   cy.visit('https://demoqa.com/upload-download');
 
   // Verify and log the download file name

@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2024-12-04T09:22:20.780Z",
+    "end": "2024-12-04T09:22:29.996Z",
+    "duration": 9216,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b285f2d5-ae8f-4ed9-befd-5cd4441ea577",
+      "title": "",
+      "fullFile": "cypress/e2e/challenge/demoqa.cy.js",
+      "file": "cypress/e2e/challenge/demoqa.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "8e5144cc-d0e1-4d30-9698-ebee0577da45",
+          "title": "Automation demo qa tools",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC6 Upload and download a file",
+              "fullTitle": "Automation demo qa tools TC6 Upload and download a file",
+              "timedOut": null,
+              "duration": 4974,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('https://demoqa.com/upload-download');\n// Verify and log the download file name\ncy.get('#downloadButton').invoke('attr', 'download').should('eq', 'sampleFile.jpeg').then(fileName => {\n  cy.log(`File to download: ${fileName}`);\n  // Click the download button\n  cy.get('#downloadButton').click();\n  // Verify the file exists in the downloads folder\n  const downloadPath = `/Users/elenarumiantseva/Desktop/demoqa/cypress/downloads/${fileName}`;\n  cy.readFile(downloadPath).should('exist');\n  // Upload the file\n  cy.get('#uploadFile').selectFile(downloadPath);\n  // Verify the uploaded file path\n  cy.get('#uploadedFilePath').should('contain.text', fileName);\n});",
+              "err": {},
+              "uuid": "f623c999-9356-45c5-b28c-0973da51a6a7",
+              "parentUUID": "8e5144cc-d0e1-4d30-9698-ebee0577da45",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "f623c999-9356-45c5-b28c-0973da51a6a7"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 4974,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
