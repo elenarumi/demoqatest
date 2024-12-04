@@ -8,7 +8,7 @@ on:
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
+    runs-on: macOS Monterey 12.7.6
   
     steps:
       # Checkout el código fuente
