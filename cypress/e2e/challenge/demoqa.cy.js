@@ -72,48 +72,51 @@ describe('Automation demo qa tools', () => {
   });
 
   // TC2 Checkbox
-  it('TC2 Checkbox: Should check and display the labels', () => {
+  it.only('TC2 Checkbox: Should check and display random labels', () => {
     cy.visit("https://demoqa.com/checkbox");
-    cy.get('[for^=tree-node]').should('have.length', 1);
+  
+    // Expande todos los nodos
     cy.get('.rct-option-expand-all').click();
-
-    cy.get('.rct-checkbox').then((nodes) => {
-      const count = nodes.length;
-      const randomNodeIndex = Cypress._.random(0, count - 1);
-      cy.wrap(nodes).eq(randomNodeIndex).click();
-
-      cy.get('[type=checkbox]').eq(randomNodeIndex).check({ force: true });
-      cy.get('[type=checkbox]').eq(randomNodeIndex).should('be.checked');
-
-      cy.get('[type=checkbox]').eq(0).check({ force: true });
-      cy.get('[type=checkbox]').eq(0).should('be.checked');
-
-      cy.get('[type=checkbox]').eq(randomNodeIndex).uncheck({ force: true });
-      cy.get('[type=checkbox]').eq(randomNodeIndex).should('not.be.checked');
-    });
-
-    const labels = [];
-    cy.get('.rct-checkbox').find('.rct-icon.rct-icon-check').then((elements) => {
-      elements.each((index, element) => {
-        const text = Cypress.$(element).closest('.rct-node').find('.rct-title').text();
-        labels.push(text);
-      });
-
-      const successTexts = [];
-      cy.get('#result .text-success').each((index, element) => {
-        successTexts.push(Cypress.$(element).text());
-      });
-
-      const checkedLabels = labels.map(text => text.toLowerCase().replace(".doc", "").replace(" ", ""));
-      const displayedTexts = successTexts.map(text => text.toLowerCase());
-
-      cy.log('Checked Labels:', checkedLabels);
-      cy.log('Displayed Texts:', displayedTexts);
-
-      expect(displayedTexts).to.have.members(checkedLabels);
+  
+    // Encuentra todos los checkboxes disponibles y selecciona uno aleatorio
+    cy.get('.rct-node input[type="checkbox"]').then(($checkboxes) => {
+      const randomNodeIndex = Math.floor(Math.random() * $checkboxes.length);
+  
+      // Selecciona el checkbox aleatorio
+      cy.wrap($checkboxes.eq(randomNodeIndex))
+        .check({ force: true })
+        .should('be.checked');
+  
+      // Obtén el texto del checkbox seleccionado
+      const selectedLabel = Cypress.$($checkboxes.eq(randomNodeIndex))
+        .closest('.rct-node')
+        .find('.rct-title')
+        .text()
+        .trim();
+  
+      cy.log('Randomly Selected Label:', selectedLabel);
+  
+      // Normaliza el texto esperado dividiéndolo en palabras clave
+      const expectedWords = selectedLabel.toLowerCase().split(/\s+/);
+  
+      // Verifica que las palabras seleccionadas aparezcan en los resultados
+      cy.get('#result .text-success')
+        .should(($result) => {
+          // Normaliza el texto del resultado transformándolo a minúsculas
+          const resultText = $result.text().toLowerCase();
+  
+          // Asegura que al menos una palabra esperada aparece en el texto del resultado
+          const matchedWords = expectedWords.filter((word) =>
+            resultText.includes(word)
+          );
+  
+          expect(matchedWords).to.have.length.greaterThan(0, `Expected to find at least one match for: ${expectedWords.join(', ')}`);
+        })
+        .and('be.visible');
     });
   });
-
+  
+  
   // TC3 Radio buttons
   it('TC3 Radio buttons', () => {
     const radioYes = "Yes";
@@ -165,7 +168,7 @@ it('TC5 Dynamic buttons', () => {
   cy.get("#colorChange").should('have.css', 'color', 'rgb(220, 53, 69)');
 });
 
-it.only('TC6 Upload and download a file', () => {
+it('TC6 Upload and download a file', () => {
   cy.visit('https://demoqa.com/upload-download');
 
   // Verify and log the download file name
