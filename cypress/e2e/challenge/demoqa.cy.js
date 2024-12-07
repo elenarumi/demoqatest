@@ -181,6 +181,8 @@ it('TC6 Upload and download a file', () => {
       // Click the download button
       cy.get('#downloadButton').click();
 
+      const downloadPath = "cypress/downloads";
+
       // Verify the file exists in the downloads folder
       cy.readFile(downloadPath, { timeout: 10000 }).should('exist');
 
