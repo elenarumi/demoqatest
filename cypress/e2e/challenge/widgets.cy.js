@@ -5,7 +5,7 @@ describe('AutoComplete Widget', () => {
       const availableColors = ['Red', 'Blue', 'White', 'Green', 'Violet', 'Magenta'];
 
      function selectRandomColor() {
-      const givenRandomOption = Cypress._.random(availableColors.length);
+      const givenRandomOption = Cypress._.random(availableColors.length - 1);
       const givenColor = availableColors[givenRandomOption];
       availableColors.splice(givenRandomOption, 1);
       return givenColor;
