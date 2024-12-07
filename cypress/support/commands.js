@@ -26,17 +26,21 @@
 
 import 'cypress-file-upload';
   
-  Cypress.Commands.add('getAutoCompletedValues', () => {
-    const autocompletedValues = [];
-    return cy.get('.auto-complete__multi-value__label', { timeout: 10000 })
-      .should(($elements) => {
+Cypress.Commands.add('getAutoCompletedValues', () => {
+    return cy
+      .get('.auto-complete__multi-value__label', { timeout: 10000 })
+      .then(($elements) => {
         cy.log('Elementos encontrados:', $elements.length);
         expect($elements.length).to.be.greaterThan(0);
-      })
-      .each(($element) => {
-        autocompletedValues.push($element.text().trim());
-      })
-      .then(() => autocompletedValues);
+  
+        // Creamos un array de los valores encontrados de manera síncrona
+        const autocompletedValues = [...$elements].map((element) =>
+          element.textContent.trim()
+        );
+  
+        // Devolvemos el array como una promesa de Cypress
+        return cy.wrap(autocompletedValues);
+      });
   });
   
-
+  

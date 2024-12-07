@@ -183,6 +183,7 @@ it('TC6 Upload and download a file', () => {
 
       // Verify the file exists in the downloads folder
       const downloadPath = `/Users/elenarumiantseva/Desktop/demoqa/cypress/downloads/${fileName}`;
+      cy.wait(10000);
       cy.readFile(downloadPath).should('exist');
 
       // Upload the file
