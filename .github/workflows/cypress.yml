@@ -53,8 +53,5 @@ jobs:
       - name: Push Report to GitHub Pages
         if: always()
         env:
-          GH_TOKEN: ${{ secrets.MY_DEMOQA }}
+          GH_TOKEN: ${{ secrets.MY_DEMOQA }}  
         run: |
-          gh auth login --with-token <<< "${{ secrets.MY_DEMOQA }}"
-          gh repo create ${demoqa}-reports --public --source .
-          gh repo upload cypress-reports.zip
