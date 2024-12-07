@@ -41,8 +41,20 @@ jobs:
         run: npx cypress run
 
 
-      - name: Upload Reports
-        if: success()
+      - name: Zip Reports
+        run: zip -r cypress-reports.zip cypress/reports
+
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-reports
+          path: cypress-reports.zip
+
+      - name: Push Report to GitHub Pages
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          zip -r cypress-reports.zip cypress/reports
-          gh release create reports-${{ github.run_number }} cypress-reports.zip --notes "Cypress test reports"
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          gh repo create ${demoqa}-reports --public --source .
+          gh repo upload cypress-reports.zip
