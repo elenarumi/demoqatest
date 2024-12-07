@@ -16,7 +16,10 @@ module.exports = {
       overwrite: false,
       html: true,
       json: true
-    }
-  }
+    },
+ 
+  },
 };
-
+module.exports = defineConfig({
+  downloadsFolder: "cypress/downloads", // Define una carpeta relativa para descargas
+});
