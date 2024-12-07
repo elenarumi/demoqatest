@@ -25,3 +25,18 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import 'cypress-file-upload';
+  
+  Cypress.Commands.add('getAutoCompletedValues', () => {
+    const autocompletedValues = [];
+    return cy.get('.auto-complete__multi-value__label', { timeout: 10000 })
+      .should(($elements) => {
+        cy.log('Elementos encontrados:', $elements.length);
+        expect($elements.length).to.be.greaterThan(0);
+      })
+      .each(($element) => {
+        autocompletedValues.push($element.text().trim());
+      })
+      .then(() => autocompletedValues);
+  });
+  
+

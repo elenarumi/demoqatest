@@ -18,3 +18,13 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // Ignora los errores relacionados con scripts de terceros
+    if (err.message.includes('Script error')) {
+      return false;
+    }
+    // Permite otros errores
+    return true;
+  });
+  
+

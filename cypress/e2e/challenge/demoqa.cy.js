@@ -72,7 +72,7 @@ describe('Automation demo qa tools', () => {
   });
 
   // TC2 Checkbox
-  it.only('TC2 Checkbox: Should check and display random labels', () => {
+  it('TC2 Checkbox: Should check and display random labels', () => {
     cy.visit("https://demoqa.com/checkbox");
   
     // Expande todos los nodos
