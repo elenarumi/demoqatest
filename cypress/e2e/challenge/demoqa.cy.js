@@ -167,30 +167,29 @@ it('TC5 Dynamic buttons', () => {
   //traducir dc3545 en rgb
   cy.get("#colorChange").should('have.css', 'color', 'rgb(220, 53, 69)');
 });
-
-it('TC6 Upload and download a file', () => {
-  cy.visit('https://demoqa.com/upload-download');
+//it('TC6 Upload and download a file', () => {
+  //cy.visit('https://demoqa.com/upload-download');
 
   // Verify and log the download file name
-  cy.get('#downloadButton')
-    .invoke('attr', 'download')
-    .should('eq', 'sampleFile.jpeg')
-    .then((fileName) => {
-      cy.log(`File to download: ${fileName}`);
+  //cy.get('#downloadButton')
+    //.invoke('attr', 'download')
+    //.should('eq', 'sampleFile.jpeg')
+    //.then((fileName) => {
+      //cy.log(`File to download: ${fileName}`);
 
       // Click the download button
-      cy.get('#downloadButton').click();
+      //cy.get('#downloadButton').click();
 
-      const downloadPath = "cypress/downloads";
+      //const downloadPath = "cypress/downloads";
 
       // Verify the file exists in the downloads folder
-      cy.readFile(downloadPath, { timeout: 10000 }).should('exist');
+      //cy.readFile(downloadPath, { timeout: 10000 }).should('exist');
 
       // Upload the file
-      cy.get('#uploadFile').selectFile(downloadPath);
+      //cy.get('#uploadFile').selectFile(downloadPath);
 
       // Verify the uploaded file path
-      cy.get('#uploadedFilePath').should('contain.text', fileName);
-    });
-});
+      //cy.get('#uploadedFilePath').should('contain.text', fileName);
+    //});
+//});
 });

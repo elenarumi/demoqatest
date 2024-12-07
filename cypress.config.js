@@ -1,22 +1,12 @@
-const { defineConfig } = require("cypress");
+const { defineConfig } = require('cypress');
 
-module.exports = {
+module.exports = defineConfig({
   e2e: {
+    // Reemplaza con la URL base de tu aplicación
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      // Configuración adicional de eventos si es necesaria
     },
-    e2e: {
-      pageLoadTimeout: 120000, // Aumenta el tiempo a 2 minutos
-    },
-    reporter: "mochawesome",
-    reporterOptions: {
-      reportDir: "cypress/reports",
-      overwrite: false,
-      html: true,
-      json: true,
-    },
-  }
-};
-
-
-
+    supportFile: 'cypress/support/e2e.js', // Asegúrate de que este archivo exista
+  },
+  downloadsFolder: 'cypress/downloads', // Ruta para archivos descargados
+});
