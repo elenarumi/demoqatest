@@ -40,11 +40,21 @@ return givenColor;
     cy.get('#autoCompleteMultipleInput', { timeout: 10000 }).type(`${givenColor4}{enter}`);
     
     cy.getAutoCompletedValues().then(values => expect (values).includes(givenColor2, givenColor3, givenColor4));
-
-
+ 
     
+    //TC3 Select colors by clicking
+    cy.get('#autoCompleteMultipleInput').type('A');
+
+    cy.get('.auto-complete__menu') // Selecciona el menú desplegable
+    .find('div') // Busca las opciones dentro del menú
+    .eq(1) // Selecciona la segunda opción (índice 1)
+    .invoke('text') // Extrae el texto de la opción
+    .then((text) => {
+      cy.log(text); // Registra el texto extraído
+    });
+        
+    });
     });
 
-  });
 
 
