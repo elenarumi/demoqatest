@@ -10,3 +10,4 @@ module.exports = defineConfig({
   },
   downloadsFolder: 'cypress/downloads', // Ruta para archivos descargados
 });
+
