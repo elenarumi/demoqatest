@@ -26,20 +26,32 @@
 
 import 'cypress-file-upload';
   
-Cypress.Commands.add('getAutoCompletedValues', () => {
-    return cy
-      .get('.auto-complete__multi-value__label', { timeout: 10000 })
-      .then(($elements) => {
-        cy.log('Elementos encontrados:', $elements.length);
-        expect($elements.length).to.be.greaterThan(0);
+//Cypress.Commands.add('getAutoCompletedValues', () => {
+   // return cy
+      //.get('.auto-complete__multi-value__label', { timeout: 10000 })
+     // .then(($elements) => {
+       // cy.log('Elementos encontrados:', $elements.length);
+      //  expect($elements.length).to.be.greaterThan(0);
   
         // Creamos un array de los valores encontrados de manera síncrona
-        const autocompletedValues = [...$elements].map((element) =>
-          element.textContent.trim()
-        );
+       // const autocompletedValues = [...$elements].map((element) =>
+     //    element.textContent.trim()
+     //   );
   
         // Devolvemos el array como una promesa de Cypress
-        return cy.wrap(autocompletedValues);
+    //    return cy.wrap(autocompletedValues);
+   //   });
+  //});
+  
+  Cypress.Commands.add('getAutoCompletedValues', () => {
+    return cy.get('.auto-complete__multi-value__label', { timeout: 10000 })
+      .should('have.length.greaterThan', 0) // Verifica que existan elementos
+      .then(($elements) => {
+        const autocompletedValues = [];
+        $elements.each((index, element) => {
+          autocompletedValues.push(element.textContent.trim()); // Usa textContent para obtener el texto
+        });
+        return autocompletedValues; // Retorna el arreglo de valores encontrados
       });
   });
   
