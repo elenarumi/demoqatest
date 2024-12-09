@@ -45,14 +45,64 @@ return givenColor;
     //TC3 Select colors by clicking
     cy.get('#autoCompleteMultipleInput').type('A');
 
-    cy.get('.auto-complete__menu') // Selecciona el menú desplegable
-    .find('div') // Busca las opciones dentro del menú
-    .eq(1) // Selecciona la segunda opción (índice 1)
-    .invoke('text') // Extrae el texto de la opción
-    .then((text) => {
-      cy.log(text); // Registra el texto extraído
+    // Paso 1: Guarda el texto de la segunda opción del menú como alias
+// Paso 1: Selecciona el texto de la segunda opción del menú y guárdalo como alias
+cy.get('.auto-complete__menu')
+  .find('div')
+  .eq(1)
+  .invoke('text') // Extrae el texto
+  .then((colorText) => {
+    expect(colorText).to.be.a('string').and.not.be.empty;
+
+    cy.contains('.auto-complete__menu div', colorText).click();
+
+    // Guarda el texto seleccionado como alias para futuras verificaciones
+    cy.wrap(colorText).as('selectedColorName');
+  });
+
+// Paso 2: Verifica que el texto seleccionado aparece en la lista de valores seleccionados
+cy.get('@selectedColorName').then((selectedColorName) => {
+  cy.get('.auto-complete__multi-value__label') // Encuentra los valores seleccionados
+    .then((elements) => {
+      // Extrae los textos de los elementos
+      const values = Array.from(elements, (el) => el.textContent.trim());
+      
+      // Verifica que el valor seleccionado esté en la lista
+      expect(values).to.include(selectedColorName);
     });
-        
+});
+
+//TC5 select single color
+// Paso 1: Escribe 'E' en el campo de texto
+cy.get('#autoCompleteSingleContainer').type('E');
+
+// Paso 2: Obtén todos los colores visibles en el menú desplegable
+cy.get('.auto-complete__menu')
+  .find('div')
+  .as('displayedColors'); // Alias para los colores visibles
+
+// Paso 3: Obtén el número de colores visibles
+cy.get('@displayedColors').its('length').then((colorCount) => {
+  // Genera un índice aleatorio basado en el número de colores visibles
+  const colorRandomIndex = Cypress._.random(0, colorCount - 1);
+
+  // Selecciona un color aleatorio basado en el índice generado
+  cy.get('@displayedColors')
+    .eq(colorRandomIndex)
+    .invoke('text') // Obtén el texto del color seleccionado
+    .then((colorText) => {
+      // Guarda el color seleccionado como alias
+      cy.wrap(colorText.trim()).as('singleColorName');
+
+      // Haz clic en el color seleccionado
+      cy.get('@displayedColors').eq(colorRandomIndex).click();
+    });
+});
+
+// Paso 4: Verifica que el color seleccionado aparece en el campo de texto
+cy.get('@singleColorName').then((singleColorName) => {
+  cy.get('.auto-complete__single-value').should('contain', singleColorName);
+});
     });
     });
 
